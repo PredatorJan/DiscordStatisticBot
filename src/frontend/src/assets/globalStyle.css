@@ -1,0 +1,118 @@
+:root {
+    --background-color: #F5F5F5;
+    
+    --background-first-depth: #F5F5F5;
+    --background-second-depth: #CCCCDD;
+    --text-color: black;
+
+    --accent-color: #69b0da;
+
+    --background-header-color: #003865;
+    --text-header-color: #EEEEFF;
+    --menu-hover-color: #005aa2;
+
+    --table-header-text-color: black;
+    --table-border: solid 1px;
+
+    --content-border: solid 2px;
+}
+:root.darkTheme {
+    --background-color: #181818;
+    --background-first-depth: #242426;
+    --background-second-depth: #343436;
+    --text-color: #EEEEFF;
+
+    --accent-color: #69b0da;
+
+    --background-header-color: #242426;
+    --text-header-color: #EEEEFF;
+    --menu-hover-color: #343436;
+
+    --table-header-text-color: black;
+    --table-border: none;
+
+    --content-border: none;
+}
+
+
+
+
+body {
+    font-family: Montserrat;
+    color: var(--text-color);
+    margin: 0px;
+
+    height: 100%;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */    
+
+    background-color: var(--background-color);
+}
+html {
+    height: 100%;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.clickable {
+    cursor: pointer;
+}
+
+
+.title {
+    margin: 0px;
+}
+.contentView {
+    background-color: var(--background-first-depth);
+    /*border: var(--content-border);*/
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0px;
+
+    width: min-content;
+}
+
+
+table {
+    border-collapse: collapse;
+
+    border: var(--table-border);
+
+    font-size: large;
+}
+th, td {
+    text-align: left;
+
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    white-space: nowrap;
+}
+th {
+    color: var(--table-header-text-color);
+    background-color: var(--accent-color);
+}
+tbody tr {
+    cursor: pointer;
+}
+
+.row:nth-child(even){background-color: var(--background-second-depth)}
+
+
+.tablePageButtons {
+    display: flex;
+    gap: 10px;
+
+    justify-content: right;
+}
+
+.selectedRow {
+    color: var(--table-header-text-color);
+    font-weight: bold;
+    background-color: var(--accent-color);
+}

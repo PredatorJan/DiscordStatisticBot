@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="001 Initialize Database" author="Jan Born">
+
+        <createTable tableName="guilds">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_guild_id"/>
+            </column>
+            <column name="discord_id" type="varchar(18)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_members" type="int"/>
+            <column name="active_members" type=" int"/>
+            <column name="inactive_members" type="int"/>
+        </createTable>
+
+        <createTable tableName="roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_roles_id"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(256)"/>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users_id"/>
+            </column>
+            <column name="discordId" type="varchar(18)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_users_role" referencedTableName="roles" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="messages">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_messages_id"/>
+            </column>
+            <column name="timestamp" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_messages_user" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="guild_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_messages_guild" referencedTableName="guilds" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_guild_information">
+            <column name="guild_id" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_guild_info_guild_id"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_guild_info_user_id"/>
+            </column>
+            <column name="rate_day" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="rate_week" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="rate_month" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <insert tableName="roles">
+            <column name="name" value="None"/>
+            <column name="description" value="No role assigned"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
