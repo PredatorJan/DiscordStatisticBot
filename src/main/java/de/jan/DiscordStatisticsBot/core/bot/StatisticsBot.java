@@ -13,8 +13,6 @@ import javax.security.auth.login.LoginException;
 @Component
 public class StatisticsBot {
 
-    private final String token = "OTg0MjAxNzc1ODQ0MzAyOTE4.GJoW-x.GI2QLiuO9xioQuNnmPgvq3TJ4xZRh08XgQoEmU";
-
     private SlashCommandListener slashCommandListener;
     private MessageListener messageListener;
     private GuildListener guildListener;
@@ -26,7 +24,7 @@ public class StatisticsBot {
         this.slashCommandListener = slashCommandListener;
     }
 
-    public void startBot() throws LoginException {
+    public void startBot(String token) throws LoginException {
         JDABuilder jdaBuilder = JDABuilder.createDefault(token);
         jdaBuilder.addEventListeners(
                 slashCommandListener,

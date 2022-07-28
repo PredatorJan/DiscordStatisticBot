@@ -17,17 +17,21 @@ public class DiscordStatisticsBotApplication {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(DiscordStatisticsBotApplication.class);
 
+	private static String DISCORD_TOKEN;
+
 	@Autowired
 	private StatisticsBot statisticsBot;
 
 	public static void main(String[] args) {
+		DISCORD_TOKEN = args[0];
+
 		SpringApplication.run(DiscordStatisticsBotApplication.class, args);
 	}
 
 	@Bean
 	public void startBot() {
 		try {
-			statisticsBot.startBot();
+			statisticsBot.startBot(DISCORD_TOKEN);
 		} catch (LoginException e) {
 			LOGGER.error("Invalid token while starting discord bot", e);
 		}
