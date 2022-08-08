@@ -10,6 +10,7 @@ import { Message } from '@/components/util/types/Types';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import { ComponentError, UserTableException } from '@/components/util/types/classes';
 
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement)
 
@@ -22,17 +23,26 @@ const props = defineProps<{
 let messages: Message[];
 
 // request message from api
-try {
-  if(props.guildId === "-1") {
-    messages = await fetch("/api/messages/user/" + props.userId)
-    .then(res => res.json());
-  } else {
-    messages = await fetch("/api/messages/" + props.userId + "/" + props.guildId)
-    .then(res => res.json());
-  }
-  
-} catch (error) {
-  console.log(error);
+if(props.guildId === "-1") {
+  messages = await fetch("/api/messages/user/" + props.userId)
+  .then(res => {
+    if(res.status !== 200) {
+      let error: ComponentError = new UserTableException("userCharts", "Error: " + res.status + " - Could not load messages from user!");
+      throw error;
+    }
+
+    return res.json();
+  });
+} else {
+  messages = await fetch("/api/messages/" + props.userId + "/" + props.guildId)
+  .then(res => {
+    if(res.status !== 200) {
+      let error: ComponentError = new UserTableException("userCharts", "Error: " + res.status + " - Could not load messages from user!");
+      throw error;
+    }
+
+    return res.json();
+  });
 }
 
 
@@ -105,9 +115,5 @@ h3 {
 }
 .charts > h3 {
   white-space: nowrap;
-}
-
-.accentColor {
-  color: var(--accent-color);
 }
 </style>

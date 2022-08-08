@@ -32,8 +32,9 @@
 </template>
 
 <script setup lang="ts">
+import { ComponentError, UserTableException } from '@/components/util/types/classes';
 import { reactive, computed } from 'vue';
-import { User } from '@/components/util/types/Types';
+import { User } from '../../util/types/Types';
 
 
 let selectedUserId = reactive({ id: -1 });
@@ -46,21 +47,30 @@ let users: User[] = [];
 let userData = reactive({ users });
 
 // requeset users from api
-try {
-  fetch("/api/users?page=0&size=" + showUserEntries)
-  .then(res => res.json())
-  .then(json => userData.users = json);
-} catch (error) {
-  console.log(error);
-}
+await fetch("/api/users?page=0&size=" + showUserEntries)
+.then(res => {
+  if(res.status !== 200) {
+    let error: ComponentError = new UserTableException("userTable", "Error: " + res.status + " - Could not load users!");
+    throw error;
+  }
+  
+  return res.json()
+})
+.then(json => userData.users = json);
+  
+
 // requeset users count from api
-try {
-  fetch("/api/users/count")
-  .then(res => res.json())
-  .then(json => maxUsers.count = json);
-} catch (error) {
-  console.log(error);
-}
+await fetch("/api/users/count")
+.then(res => {
+  if(res.status !== 200) {
+    let error: ComponentError = new UserTableException("userTable", "Error: " + res.status + " - Could not load user count!");
+    throw error;
+  }
+  
+  return res.json()
+})
+.then(json => maxUsers.count = json);
+  
 
 // computed
 

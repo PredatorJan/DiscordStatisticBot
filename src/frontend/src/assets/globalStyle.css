@@ -64,6 +64,7 @@ html {
 
 
 .title {
+    white-space: nowrap;
     margin: 0px;
 }
 .contentView {
