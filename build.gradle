@@ -51,3 +51,16 @@ tasks.register('buildFrontend', Exec) {
 	workingDir './src/frontend/'
 	commandLine 'npm.cmd', 'run', 'build'
 }
+
+task 'startLocalApplication' {
+	dependsOn tasks.build
+
+	doLast {
+		javaexec {
+			main="-jar";
+			args = [
+					"D:\\Programmieren\\Projekte\\DiscordStatisticBot\\build\\libs\\DiscordStatisticsBot-0.0.1-SNAPSHOT.war"
+			]
+		}
+	}
+}
