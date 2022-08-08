@@ -40,6 +40,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { Guild } from '@/components/util/types/Types';
+import { ComponentError, UserTableException } from '../../util/types/classes';
 
 const props = defineProps<{
   userId: string
@@ -59,21 +60,28 @@ let guilds: Guild[] = [];
 let guildData = reactive({ guilds });
 
 // requeset guilds from api
-try {
-  fetch("/api/guilds/user/" + props.userId + "?page=0&size=" + showGuildEntries)
-  .then(res => res.json())
-  .then(json => guildData.guilds = json);
-} catch (error) {
-  console.log(error);
-}
+await fetch("/api/guilds/user/" + props.userId + "?page=0&size=" + showGuildEntries)
+.then(res => {
+  if(res.status !== 200) {
+    let error: ComponentError = new UserTableException("guildTable", "Error: " + res.status + " - Could not load guilds!");
+    throw error;
+  }
+  
+  return res.json();
+})
+.then(json => guildData.guilds = json);
+
 // requeset guilds count from api
-try {
-  fetch("/api/guilds/count/" + props.userId)
-  .then(res => res.json())
-  .then(json => maxGuilds.count = json);
-} catch (error) {
-  console.log(error);
-}
+await fetch("/api/guilds/count/" + props.userId)
+.then(res => {
+  if(res.status !== 200) {
+    let error: ComponentError = new UserTableException("guildTable", "Error: " + res.status + " - Could not load guild count!");
+    throw error;
+  }
+
+  return res.json();
+})
+.then(json => maxGuilds.count = json);
 
 
 // computed
