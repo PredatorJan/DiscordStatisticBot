@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Service
-public class StatisticsBotConfiguration implements IStatisticsBotConfiguration{
+public class StatisticsBotConfiguration implements IStatisticsBotConfiguration {
 
-    private static String configPath = "./config/config.properties";
+    private static final String configPath = "./config/config.properties";
 
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
         try {
             properties.load(new FileInputStream(configPath));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not load config.properties file", e);
         }
     }
 
